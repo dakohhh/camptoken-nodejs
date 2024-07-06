@@ -8,6 +8,10 @@ import settings from "./settings";
 const app = express()
 const port = settings.port
 
+processes(app)
+
+app.use(exceptionHandler)
+
 
 app.listen(port, () => {
 
