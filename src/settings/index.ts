@@ -7,14 +7,14 @@ const config = {
     development: {
         // Development environment settings
         port: process.env.PORT || 3000,
-        database: process.env.DEV_MONGO_URL,
+        database: process.env.DEV_MONGO_URL as string,
         secret_key: process.env.SECRET_KEY
     },
 
     production: {
         // Production environment settings
         port: process.env.PORT || 3000,
-        database: process.env.PROD_MONGO_URL,
+        database: process.env.PROD_MONGO_URL as string,
         secret_key: process.env.SECRET_KEY
 
     },
