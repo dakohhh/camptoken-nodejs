@@ -8,6 +8,12 @@ export default class AuthService{
 
 
     }
+
+    static async login(userInput:IUser){
+
+        console.log(userInput);
+
+    }
    
 }
 

@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction, response } from "express";
-import signupSchema from "../validation/signup.validation"
+import { Request, Response, NextFunction } from "express";
+import signupSchema from "../validation/student.validation"
 import { BadRequestException } from "../utils/exceptions";
 import AuthService from "../services/auth.service";
-import { IUser } from "types";
+import { IStudent } from "../types";
+import response from "../utils/response";
 
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -27,14 +28,14 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 
-export const signup = async (req: Request, res: Response, next: NextFunction) => {
+export const signupStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const {error, value} = signupSchema.validate(req.body);
 
         if (error) throw new BadRequestException(error.details[0].message);
     
-        const userInput = value as IUser
+        const userInput = value as IStudent
 
         await AuthService.register(userInput);
 
@@ -46,3 +47,23 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         next(error)
     }
 }
+
+// export const signupVendor = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+
+//         const {error, value} = signupSchema.validate(req.body);
+
+//         if (error) throw new BadRequestException(error.details[0].message);
+    
+//         const userInput = value as IUser
+
+//         await AuthService.register(userInput);
+
+//         res.status(201).json({"message": "user registred successfull"})
+
+//     }
+//     catch (error) {
+//         console.log(error)
+//         next(error)
+//     }
+// }
