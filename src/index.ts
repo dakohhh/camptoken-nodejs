@@ -1,5 +1,6 @@
+// import 'module-alias/register';
 import express from "express";
-// import routers from "./routers";
+import routers from "./routers";
 import processes from "./middleware/processes";
 import exceptionHandler from "./middleware/exceptionHandler";
 import settings from "./settings";
@@ -11,7 +12,9 @@ const port = settings.port
 processes(app)
 
 
+app.use(routers())
 app.use(exceptionHandler)
+
 
 
 app.listen(port, async () => {

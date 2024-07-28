@@ -1,5 +1,5 @@
 import express from "express";
-import * as exception from "../helpers/exceptions";
+import * as exception from "../utils/exceptions"
 
 export default (
   err: Error,
@@ -7,6 +7,7 @@ export default (
   res: express.Response,
   next: express.NextFunction
 ) => {
+
   if (
     err instanceof exception.BadRequestException ||
     err instanceof exception.UnauthorizedException ||
@@ -15,6 +16,7 @@ export default (
     err instanceof exception.ForbiddenException ||
     err instanceof exception.CredentialException
   ) {
+    
     res.status(err.statusCode).json({
       status: false,
       message: err.message,
