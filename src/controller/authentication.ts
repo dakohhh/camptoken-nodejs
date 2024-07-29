@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import signupSchema from "../validation/student.validation"
+import signupSchema from "../validation/student.validation";
 import { BadRequestException } from "../utils/exceptions";
 import AuthService from "../services/auth.service";
-import { IStudent } from "../types";
 import response from "../utils/response";
+import { StatusCodes } from "http-status-codes";
 
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { email, password } = req.body;
+        // const { email, password } = req.body;
 
         // const token = await authenticateUser(email, password)
 
@@ -22,31 +22,33 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     }
     catch (error) {
-        console.log(error)
-        next(error)
+        console.log(error);
+        next(error);
     }
-}
+};
 
 
 export const signupStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const {error, value} = signupSchema.validate(req.body);
+        const {error, value} = signupSchema.options({ stripUnknown: true }).validate(req.body);
 
-        if (error) throw new BadRequestException(error.details[0].message);
-    
-        const userInput = value as IStudent
+        console.log(error?.message);
 
-        await AuthService.register(userInput);
+        if (error) throw new BadRequestException(error.message);
 
-        res.status(201).json({"message": "user registred successfull"})
+        const new_student = await AuthService.register(value);
+
+        const context = { student: new_student };
+
+        res.status(StatusCodes.CREATED).json(response("user registred successfull", context));
 
     }
     catch (error) {
-        console.log(error)
-        next(error)
+        console.log(error);
+        next(error);
     }
-}
+};
 
 // export const signupVendor = async (req: Request, res: Response, next: NextFunction) => {
 //     try {

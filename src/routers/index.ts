@@ -3,12 +3,12 @@ import authentication from "./authentication";
 
 
 
-const router = express.Router()
+const router = express.Router();
 
 export default (): express.Router =>{
 
     authentication(router);
     // user(router)
 
-    return router
-}
+    return router;
+};

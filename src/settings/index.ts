@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 dotenv.config();
 
 
@@ -39,4 +39,4 @@ const config = {
 const environment: string  = process.env.NODE_ENV ? "development" : "production";
 
 
-export default config[environment as keyof typeof config]
+export default config[environment as keyof typeof config];

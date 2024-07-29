@@ -12,13 +12,13 @@ export const connect_to_mongo = async () => {
     
         await mongoose.connect(url);
 
-        console.log("Connection to MongoDB established.")
+        console.log("Connection to MongoDB established.");
 
     }
     catch(err){
         console.log("Error connecting to MongoDB: ", err);
     }
-}
+};
 
 
 export const disconnect_from_mongo = async () => {
@@ -26,5 +26,5 @@ export const disconnect_from_mongo = async () => {
 
     await mongoose.disconnect();
 
-    console.log("Connection to MongoDB closed.")
-}   
+    console.log("Connection to MongoDB closed.");
+};   

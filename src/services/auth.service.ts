@@ -1,11 +1,13 @@
-import { IUser } from "types";
+import { IUser, IStudent } from "types";
+import Student from "../database/models/student.model";
 
 export default class AuthService{
 
-    static async register(userInput:IUser){
+    static async register(signupStudentInput:IStudent){
 
-        console.log(userInput);
+        const new_student = await new Student(signupStudentInput).save();
 
+        return new_student;
 
     }
 
