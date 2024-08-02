@@ -12,6 +12,9 @@ const configureProcessesMiddleware = async (app: Express) => {
         })
     );
 
+    // Set Proxy
+    app.set('trust proxy', true);
+
     // Enable HTTP request logging
     app.use(morgan('common'));
 

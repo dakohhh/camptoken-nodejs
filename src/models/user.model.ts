@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { IUser } from '@/types';
+import { UserRoles } from '@/enums/user-roles';
 
 const baseOptions = {
     discriminatorKey: 'userType',
@@ -42,7 +43,7 @@ const BaseUserSchema = new mongoose.Schema<IUser>(
 
         role: {
             type: String,
-            // enum: Object.values(UserRoles),
+            enum: Object.values(UserRoles),
         },
     },
     baseOptions

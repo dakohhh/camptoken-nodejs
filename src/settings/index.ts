@@ -45,6 +45,11 @@ const GLOBAL_CONFIG = {
         SMTP_PASSWORD: process.env.MAIL_PASSWORD?.toString(),
         MAIL_SECURE: process.env.MAIL_SECURE,
     },
+
+    USER_ROLES: {
+        ADMIN: 'admin',
+        STUDENT: 'student',
+    },
 };
 
 const config = {
@@ -75,7 +80,7 @@ const config = {
         ...GLOBAL_CONFIG,
         port: process.env.PORT || 3000,
         MONGODB_URI: process.env.PROD_MONGO_URL as string,
-        JWT_SECRET: process.env.SECRET_KEY,
+        JWT_SECRET: process.env.SECRET_KEY as string,
 
         // App Level Configs
         // ============================================================
