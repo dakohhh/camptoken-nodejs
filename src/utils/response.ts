@@ -1,9 +1,8 @@
-function response<T>(message:string, data: T | null = null, success: boolean = true) {
-
+function response<T>(message: string, data: T | null, success?: boolean) {
     return {
-        success: success,
         message: message,
-        data: data
+        data: data || null,
+        success: success == null ? true : success,
     };
 }
 

@@ -1,5 +1,5 @@
-import { IUser, IStudent } from "types";
-import Student from "../database/models/student.model";
+import { IUser, IStudent } from "@/types";
+import Student from "../models/student.model";
 
 export default class AuthService{
 

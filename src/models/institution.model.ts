@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Institution } from "types";
+import { Institution } from "@/types";
 
 
 const institutionSchema = new mongoose.Schema<Institution>({

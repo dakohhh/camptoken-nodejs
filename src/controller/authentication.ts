@@ -20,6 +20,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         //     data: context 
         // }).end()
 
+        next();
+
     }
     catch (error) {
         console.log(error);

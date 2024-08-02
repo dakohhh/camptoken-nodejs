@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import BaseUser from "./user.model";
-import { IVendor } from "types";
+import { IVendor } from "@/types";
 
 const vendorSchema = new mongoose.Schema<IVendor>({
 
