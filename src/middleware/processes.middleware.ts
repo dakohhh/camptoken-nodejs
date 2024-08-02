@@ -1,21 +1,27 @@
-import { Express } from "express";
-import cors from "cors";
-import morgan from "morgan";
-import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
-import compression from "compression";
+import express, { Express } from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import compression from 'compression';
 
-export default async (app: Express) => {
+const configureProcessesMiddleware = async (app: Express) => {
+    // enable cors
+    app.use(
+        cors({
+            credentials: true,
+        })
+    );
 
-    app.use(cors({
-        credentials: true
-    }));
-
-    app.use(morgan("tiny"));
+    // Enable HTTP request logging
+    app.use(morgan('common'));
 
     app.use(compression());
 
+    // Parse HTTP request cookie Header to JSON
     app.use(cookieParser());
 
-    app.use(bodyParser.json());
-}; 
+    // Tell express to recognize the incoming Request Object as a JSON Object
+    app.use(express.json());
+};
+
+export default configureProcessesMiddleware;

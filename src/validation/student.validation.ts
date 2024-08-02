@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi';
 
 export default Joi.object({
     firstname: Joi.string().min(3).max(30).required(),

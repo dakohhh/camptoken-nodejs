@@ -1,21 +1,15 @@
-import mongoose from "mongoose";
-import settings from "../settings";
-
-
+import mongoose from 'mongoose';
+import settings from '../settings';
 
 export const connect_to_mongo = async () => {
-    try{
-    
+    try {
         await mongoose.connect(settings.MONGODB_URI);
 
-        console.log(":::> Connection to MongoDB established.");
-
-    }
-    catch(error){
-        console.log("<::: Error connecting to MongoDB: ", error);
+        console.log(':::> Connection to MongoDB established.');
+    } catch (error) {
+        console.log('<::: Error connecting to MongoDB: ', error);
     }
 };
-
 
 // set mongoose options to have lean turned on by default | ref: https://itnext.io/performance-tips-for-mongodb-mongoose-190732a5d382
 mongoose.Query.prototype.setOptions = function () {
@@ -27,8 +21,7 @@ mongoose.Query.prototype.setOptions = function () {
 };
 
 export const disconnect_from_mongo = async () => {
-
     await mongoose.disconnect();
 
-    console.log("Connection to MongoDB closed.");
-};   
+    console.log('Connection to MongoDB closed.');
+};

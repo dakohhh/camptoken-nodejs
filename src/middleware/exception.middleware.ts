@@ -1,32 +1,23 @@
-import express from "express";
-import * as exception from "../utils/exceptions";
+import express, { Express } from 'express';
+import response from '@/utils/response';
+import * as exception from '@/utils/exceptions';
 
-export default (
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-) => {
-
-    if (
-        err instanceof exception.BadRequestException ||
-    err instanceof exception.UnauthorizedException ||
-    err instanceof exception.ServerErrorException ||
-    err instanceof exception.NotFoundException ||
-    err instanceof exception.ForbiddenException ||
-    err instanceof exception.CredentialException
-    ) {
-    
-        res.status(err.statusCode).json({
-            status: false,
-            message: err.message,
-            data: err.data,
-        });
-    } else {
-    // Handling other types of errors
-        res.status(500).json({
-            status: false,
-            message: "Internal Server Error",
-            data: null,
-        });
-    }
+const configureErrorMiddleware = (app: Express) => {
+    app.use((error: Error, req: express.Request, res: express.Response) => {
+        if (
+            error instanceof exception.BadRequestException ||
+            error instanceof exception.UnauthorizedException ||
+            error instanceof exception.ServerErrorException ||
+            error instanceof exception.NotFoundException ||
+            error instanceof exception.ForbiddenException ||
+            error instanceof exception.CredentialException
+        ) {
+            res.status(error.statusCode).json(response(error.message, error.data, false));
+        } else {
+            // Handling other types of errors
+            res.status(500).json(response('Internal Server Error', null, false));
+        }
+    });
 };
+
+export default configureErrorMiddleware;

@@ -1,20 +1,19 @@
-import { Document } from "mongoose";
+import { Document } from 'mongoose';
 
-export interface IUser extends Document{
+export interface IUser extends Document {
     _id: string;
-    firstname: string
-    lastname: string
-    email: string
+    firstname: string;
+    lastname: string;
+    email: string;
     password: string;
-    role: "student" | "vendor" | "admin";
+    role: 'student' | 'vendor' | 'admin';
     isVerified: boolean;
-    createdAt?:Date;
-    updatedAt?:Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
+export interface IStudent extends IUser {}
 
-export interface IStudent extends IUser{};
-
-export interface IVendor extends IUser{
-    businessName:string;
-};
+export interface IVendor extends IUser {
+    businessName: string;
+}

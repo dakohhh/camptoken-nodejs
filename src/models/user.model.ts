@@ -1,50 +1,52 @@
-import mongoose from "mongoose";
-import { IUser } from "@/types";
+import mongoose from 'mongoose';
+import { IUser } from '@/types';
 
 const baseOptions = {
-    discriminatorKey: 'userType', 
-    collection: 'users', 
+    discriminatorKey: 'userType',
+    collection: 'users',
     timestamps: true,
 };
 
-const BaseUserSchema = new mongoose.Schema<IUser>({
-    firstname: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 30
-    },
-    lastname: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 50
-    },
+const BaseUserSchema = new mongoose.Schema<IUser>(
+    {
+        firstname: {
+            type: String,
+            required: true,
+            minlength: 3,
+            maxlength: 30,
+        },
+        lastname: {
+            type: String,
+            required: true,
+            minlength: 3,
+            maxlength: 50,
+        },
 
-    email: {
-        type: String,
-        required: true,
-        maxlength: 255,
-        unique: true
-    },
+        email: {
+            type: String,
+            required: true,
+            maxlength: 255,
+            unique: true,
+        },
 
-    password: {
-        type: String,
-        required: true,
-        minlength: 8,
-    },
+        password: {
+            type: String,
+            required: true,
+            minlength: 8,
+        },
 
-    isVerified: {
-        type: Boolean,
-        default: false
-    },
+        isVerified: {
+            type: Boolean,
+            default: false,
+        },
 
-    role: {
-        type: String,
-        // enum: Object.values(UserRoles),
+        role: {
+            type: String,
+            // enum: Object.values(UserRoles),
+        },
     },
-}, baseOptions);
-
+    baseOptions
+);
 
 const BaseUser = mongoose.model<IUser>('User', BaseUserSchema);
 

@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import packageInfo from '../../package.json';
 dotenv.config();
 
-
 // How to use this:
 // ============================================================
 // This file is used to store all the environment variables and constants used in the application.
@@ -18,42 +17,35 @@ dotenv.config();
 // 1. Add a new key to the CONFIG_BUILDER object with the environment name.
 // 2. Duplicate the development object and replace the values with the new environment's values.
 
-const DEPLOYMENT_ENV: string  = process.env.NODE_ENV ? "development" : "production";
+const DEPLOYMENT_ENV: string = process.env.NODE_ENV ? 'development' : 'production';
 
 const GLOBAL_CONFIG = {
-
     // System Constants
     // ============================================================
 
-    APP_NAME: packageInfo.name as string || "<application-name>",
-    APP_VERSION: packageInfo.version as string || "<application-version>",
+    APP_NAME: (packageInfo.name as string) || '<application-name>',
+    APP_VERSION: (packageInfo.version as string) || '<application-version>',
     PORT: process.env.PORT || 3000,
 
-
-     // Security / Auth Configs
+    // Security / Auth Configs
     // ============================================================
     BCRYPT_SALT: 10,
-    ACCESS_TOKEN_JWT_EXPIRES_IN: ms("1h"),
-    REFRESH_TOKEN_JWT_EXPIRES_IN: ms("30d"),
-    DEFAULT_DB_TOKEN_EXPIRY_DURATION: ms("15m"),
-
+    ACCESS_TOKEN_JWT_EXPIRES_IN: ms('1h'),
+    REFRESH_TOKEN_JWT_EXPIRES_IN: ms('30d'),
+    DEFAULT_DB_TOKEN_EXPIRY_DURATION: ms('15m'),
 
     // Email / Auth Configs
     // ============================================================
-    SUPPORT_EMAIL: "support@nodejs-boilertemplate.com",
-    DEFAULT_EMAIL_FROM: "nodejs-boilertemplate <no-reply@nodejs-boilertemplate.com>",
+    SUPPORT_EMAIL: 'support@nodejs-boilertemplate.com',
+    DEFAULT_EMAIL_FROM: 'nodejs-boilertemplate <no-reply@nodejs-boilertemplate.com>',
     EMAIL_CREDENTIAL: {
         SMTP_HOST: process.env.MAIL_HOST?.toString(),
         SMTP_PORT: process.env.MAIL_PORT?.toString(),
         SMTP_USER: process.env.MAIL_USERNAME?.toString(),
         SMTP_PASSWORD: process.env.MAIL_PASSWORD?.toString(),
-        MAIL_SECURE: process.env.MAIL_SECURE
+        MAIL_SECURE: process.env.MAIL_SECURE,
     },
-
-
-}
-
-
+};
 
 const config = {
     development: {
@@ -61,13 +53,11 @@ const config = {
 
         ...GLOBAL_CONFIG,
         port: process.env.PORT || 3000,
-        JWT_SECRET: "19d56917f78c581c15056ae050a6f2b790db82c5",
-
+        JWT_SECRET: '19d56917f78c581c15056ae050a6f2b790db82c5',
 
         // DB Configs
         // ============================================================
-        MONGODB_URI: "mongodb://localhost:27017/CAMPTOKEN",
-
+        MONGODB_URI: 'mongodb://localhost:27017/CAMPTOKEN',
 
         // App Level Configs
         // ============================================================
@@ -77,7 +67,6 @@ const config = {
         //     PUBLIC_KEY: "pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         //     SECRET_KEY: "sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         // },
-
     },
 
     production: {
@@ -96,10 +85,7 @@ const config = {
         //     PUBLIC_KEY: "pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         //     SECRET_KEY: "sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         // },
-
     },
 } as const;
-
-
 
 export default config[DEPLOYMENT_ENV as keyof typeof config];

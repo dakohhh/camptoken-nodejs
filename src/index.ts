@@ -1,29 +1,23 @@
-// import 'module-alias/register';
-import express from "express";
-import routers from "./routers";
-import processes from "./middleware/processes.middleware";
-import exceptionHandler from "./middleware/exception.middleware";
-import settings from "./settings";
-import { connect_to_mongo } from "./libraries/mongodb";
-
-// import { connect_to_mongo } from "@/libraries/mongodb";
-// import BaseUser from "@/models/user.model";
+import express from 'express';
+import routers from '@/routers';
+import settings from '@/settings';
+import configureProcessesMiddleware from '@/middleware/processes.middleware';
+import configureErrorMiddleware from '@/middleware/exception.middleware';
+import { connect_to_mongo } from '@/libraries/mongodb';
 
 const app = express();
 const port = settings.port;
 
-processes(app);
+configureProcessesMiddleware(app);
 
-
+// Routes
 app.use(routers());
-app.use(exceptionHandler);
 
-
+// Error Handling Middleware
+configureErrorMiddleware(app);
 
 app.listen(port, async () => {
-
     await connect_to_mongo();
 
     console.log(`Server is running on port ${port}`);
-
 });
