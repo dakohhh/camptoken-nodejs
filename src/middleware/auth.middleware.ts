@@ -1,27 +1,25 @@
 import { UserRoles } from '@/enums/user-roles';
 import { AuthRequest } from '@/types/auth';
-import { Request, Response, NextFunction } from 'express';
-import { CredentialException, UnauthorizedException, ForbiddenException } from '@/utils/exceptions';
+import { Response, NextFunction } from 'express';
+import { UnauthorizedException, ForbiddenException } from '@/utils/exceptions';
 import JWT from 'jsonwebtoken';
 import settings from '@/settings';
 import { Payload } from '@/types';
 import { BaseUser } from '@/models';
+import { IUser } from '@/types';
 
 function auth(role: UserRoles) {
-    // This function is empty because it is a placeholder for the actual implementation.
-    // The actual implementation will be provided in the next step.
-
     return async (req: AuthRequest, res: Response, next: NextFunction) => {
         try {
             const authHeader = req.headers['authorization'];
 
             const token = authHeader && authHeader.split(' ')[1]; // Extract the token from the Authorization header
 
-            if (!token) throw new CredentialException('-middleware/missing-token');
+            if (!token) throw new UnauthorizedException('-middleware/missing-token');
 
             const payload = JWT.verify(token, settings.JWT_SECRET) as Payload;
 
-            const user = await BaseUser.findById(payload.userId);
+            let user = await BaseUser.findOne({ _id: payload.userId });
 
             // If the user is not found
             if (!user) throw new UnauthorizedException('-middleware/user-not-found');
@@ -31,6 +29,9 @@ function auth(role: UserRoles) {
 
             // If role is not authorized to access route
             if (user.role !== role) throw new ForbiddenException('-middleware/user-not-authorized');
+
+            // Update the last active date for user
+            user = (await BaseUser.findByIdAndUpdate(user.id, { lastActive: Date.now() }, { new: true })) as IUser;
 
             req.user = user;
 

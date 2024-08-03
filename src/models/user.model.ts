@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { IUser } from '@/types';
 import { UserRoles } from '@/enums/user-roles';
 
@@ -8,7 +8,7 @@ const baseOptions = {
     timestamps: true,
 };
 
-const BaseUserSchema = new mongoose.Schema<IUser>(
+const BaseUserSchema: Schema<IUser> = new mongoose.Schema<IUser>(
     {
         firstname: {
             type: String,
@@ -39,6 +39,16 @@ const BaseUserSchema = new mongoose.Schema<IUser>(
         isVerified: {
             type: Boolean,
             default: false,
+        },
+
+        accountDisabled: {
+            type: Boolean,
+            default: false,
+        },
+
+        lastActive: {
+            type: Date,
+            default: () => Date.now(),
         },
 
         role: {

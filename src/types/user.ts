@@ -8,6 +8,8 @@ export interface IUser extends Document {
     password: string;
     role: 'student' | 'vendor' | 'admin';
     isVerified: boolean;
+    accountDisabled: boolean;
+    lastActive: Date;
     createdAt?: Date;
     updatedAt?: Date;
 }

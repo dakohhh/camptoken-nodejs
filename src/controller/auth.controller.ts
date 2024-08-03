@@ -28,9 +28,9 @@ class AuthController {
 
     static async signupVendor(req: Request, res: Response, next: NextFunction) {
         try {
-            const new_student = await AuthService.registerVendor(req);
+            const new_vendor = await AuthService.registerVendor(req);
 
-            const results = { student: new_student };
+            const results = { vendor: new_vendor };
 
             res.status(StatusCodes.CREATED).json(response('user registered successfull', results));
         } catch (error) {

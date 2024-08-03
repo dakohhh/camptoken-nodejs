@@ -7,5 +7,5 @@ import AuthController from '@/controller/auth.controller';
 export default (router: express.Router) => {
     router.post('/auth/login', AuthController.login);
     router.post('/auth/student/signup', AuthController.signupStudent);
-    // router.post('/auth/vendor/signup', AuthController.signupStudent, signup);
+    router.post('/auth/vendor/signup', AuthController.signupVendor);
 };

@@ -1,4 +1,4 @@
-import { BaseUser, Student } from '@/models';
+import { BaseUser, Student, Vendor } from '@/models';
 import { Request } from 'express';
 import { BadRequestException } from '@/utils/exceptions';
 import { hashPassword, comparePassword } from '@/authentication/hash';
@@ -58,13 +58,48 @@ class AuthService {
 
         if (!validPassword) throw new BadRequestException('Invalid email or password');
 
+        // Check if the user's account is disabled
+        if (user.accountDisabled) throw new BadRequestException('Your account is disabled, please contact support');
+
         // Generate JWT Token
         const token = await TokenService.generateToken(user);
 
         return { role: user.role, token: token };
     }
 
-    static async registerVendor({ body }: Partial<Request>) {}
+    static async registerVendor({ body }: Partial<Request>) {
+
+        const { error, value } = Joi.object({
+            firstname: Joi.string().min(3).max(30).required(),
+            lastname: Joi.string().min(3).max(30).required(),
+            email: Joi.string().email().required(),
+            password: Joi.string().min(8).required(),
+            businessName: Joi.string().min(5).max(50).required(),
+        })
+            .options({ stripUnknown: true })
+            .validate(body);
+
+        if (error) throw new BadRequestException(error.message);
+
+        const hashedPassword = await hashPassword(value.password);
+
+        const context = {
+            firstname: value.firstname,
+            lastname: value.lastname,
+            email: value.email,
+            password: hashedPassword,
+            role: UserRoles.VENDOR,
+            businessName: value.businessName,
+        };
+
+        const new_vendor = await new Vendor(context).save();
+
+        const { password, ...vendor } = new_vendor.toObject();
+
+        // Send Verification Email
+
+        return vendor;
+    }
 }
 
 export default AuthService;
