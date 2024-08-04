@@ -1,4 +1,5 @@
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { IWallet } from './wallet';
 
 export interface IUser extends Document {
     _id: string;
@@ -13,6 +14,7 @@ export interface IUser extends Document {
     lastActive: Date;
     createdAt?: Date;
     updatedAt?: Date;
+    walletId?: mongoose.Types.ObjectId;
 }
 
 export interface IStudent extends IUser {}

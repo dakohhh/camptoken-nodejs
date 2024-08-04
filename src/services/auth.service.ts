@@ -5,6 +5,7 @@ import { hashPassword, comparePassword } from '@/authentication/hash';
 import { UserRoles } from '@/enums/user-roles';
 import { TokenService } from './token.service';
 import WalletService from './wallet.service';
+import Wallet from '@/models/wallet.model';
 import Joi from 'joi';
 
 class AuthService {
@@ -34,9 +35,11 @@ class AuthService {
 
         const new_student = await new Student(context).save();
 
+        const wallet = await Wallet.create({ user: new_student });
 
-        // Implement a task queue (bull) here to create wallet in the background
-        await WalletService.createUserWallet(new_student);
+        new_student.walletId = wallet._id;
+
+        await new_student.save();
 
         const { password, ...student } = new_student.toObject();
 

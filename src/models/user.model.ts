@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { IUser } from '@/types';
 import { UserRoles } from '@/enums/user-roles';
+import Wallet from './wallet.model';
 
 const baseOptions = {
     discriminatorKey: 'userType',
@@ -52,7 +53,10 @@ const BaseUserSchema: Schema<IUser> = new mongoose.Schema<IUser>(
             type: Boolean,
             default: false,
         },
-
+        walletId: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Wallet',
+        },
         lastActive: {
             type: Date,
             default: () => Date.now(),
@@ -65,6 +69,13 @@ const BaseUserSchema: Schema<IUser> = new mongoose.Schema<IUser>(
     },
     baseOptions
 );
+
+
+// Implement this when you go to disable account
+
+// BaseUserSchema.pre('findOneAndDelete', async function (this: IUser, next) {
+//     console.log(this.walletId);
+// });
 
 const BaseUser = mongoose.model<IUser>('User', BaseUserSchema);
 

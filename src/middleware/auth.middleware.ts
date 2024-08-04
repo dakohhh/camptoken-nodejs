@@ -10,7 +10,7 @@ import { AuthRequest } from '@/types/auth';
 
 /**
  * Authentication middleware
- * 
+ *
  * @param {UserRoles[]} roles - Permission role array contains the type of users that can access the route
  */
 
@@ -36,17 +36,18 @@ function auth(roles: UserRoles[]) {
             if (user.accountDisabled) throw new UnauthorizedException('-middleware/user-account-disabled');
 
             // If role is not authorized to access route
-            if (!roles.includes(user.role as UserRoles)) throw new ForbiddenException('-middleware/user-not-authorized');
+            if (!roles.includes(user.role as UserRoles))
+                throw new ForbiddenException('-middleware/user-not-authorized');
 
             // Update the last active date for user
-            user = await BaseUser.findByIdAndUpdate(user.id, { lastActive: Date.now() }, { new: true }) as IUser;
+            user = (await BaseUser.findByIdAndUpdate(user.id, { lastActive: Date.now() }, { new: true })) as IUser;
 
             req.user = user;
 
             next();
         } catch (error) {
             next(error);
-        } 
+        }
     };
 }
 

@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import BaseUser from './user.model';
 import { generateWalletId } from '@/utils/generate';
 import { IWallet } from '@/types';
 
@@ -6,7 +7,7 @@ const baseOptions = {
     timestamps: true,
 };
 
-const WalletSchema: Schema<IWallet> = new mongoose.Schema<IWallet>(
+const WalletSchema: Schema<IWallet> = new Schema<IWallet>(
     {
         walletId: {
             type: String,
@@ -18,12 +19,10 @@ const WalletSchema: Schema<IWallet> = new mongoose.Schema<IWallet>(
         balance: {
             type: Number,
             required: true,
-            default: 0.23
-
+            default: 0,
         },
-
         user: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Types.ObjectId,
             required: true,
             unique: true,
             ref: 'User',
