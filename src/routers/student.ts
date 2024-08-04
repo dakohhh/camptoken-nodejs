@@ -7,7 +7,7 @@ import { UserRoles } from '@/enums/user-roles';
 // import loginValidation from "validation/login.validation";
 
 export default (router: express.Router) => {
-    router.get('/student/', auth(UserRoles.STUDENT), StudentController.getUserSession);
+    router.get('/student/', auth([UserRoles.STUDENT]), StudentController.getUserSession);
     // router.post('/auth/student/signup', StudentController.getUserSession);
     // router.post('/auth/vendor/signup', AuthController.signupStudent, signup);
 };

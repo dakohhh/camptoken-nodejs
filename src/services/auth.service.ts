@@ -4,6 +4,7 @@ import { BadRequestException } from '@/utils/exceptions';
 import { hashPassword, comparePassword } from '@/authentication/hash';
 import { UserRoles } from '@/enums/user-roles';
 import { TokenService } from './token.service';
+import WalletService from './wallet.service';
 import Joi from 'joi';
 
 class AuthService {
@@ -11,6 +12,7 @@ class AuthService {
         const { error, value } = Joi.object({
             firstname: Joi.string().min(3).max(30).required(),
             lastname: Joi.string().min(3).max(30).required(),
+            phoneNumber: Joi.string().min(10).max(10).required(),
             email: Joi.string().email().required(),
             password: Joi.string().min(8).required(),
         })
@@ -24,6 +26,7 @@ class AuthService {
         const context = {
             firstname: value.firstname,
             lastname: value.lastname,
+            phoneNumber: value.phoneNumber,
             email: value.email,
             password: hashedPassword,
             role: UserRoles.STUDENT,
@@ -31,11 +34,50 @@ class AuthService {
 
         const new_student = await new Student(context).save();
 
+
+        // Implement a task queue (bull) here to create wallet in the background
+        await WalletService.createUserWallet(new_student);
+
         const { password, ...student } = new_student.toObject();
 
         // Send Verification Email
 
         return student;
+    }
+
+    static async registerVendor({ body }: Partial<Request>) {
+        const { error, value } = Joi.object({
+            firstname: Joi.string().min(3).max(30).required(),
+            lastname: Joi.string().min(3).max(30).required(),
+            phoneNuber: Joi.string().min(10).max(10).required(),
+            email: Joi.string().email().required(),
+            password: Joi.string().min(8).required(),
+            businessName: Joi.string().min(5).max(50).required(),
+        })
+            .options({ stripUnknown: true })
+            .validate(body);
+
+        if (error) throw new BadRequestException(error.message);
+
+        const hashedPassword = await hashPassword(value.password);
+
+        const context = {
+            firstname: value.firstname,
+            lastname: value.lastname,
+            phoneNumber: value.phoneNumber,
+            email: value.email,
+            password: hashedPassword,
+            role: UserRoles.VENDOR,
+            businessName: value.businessName,
+        };
+
+        const new_vendor = await new Vendor(context).save();
+
+        const { password, ...vendor } = new_vendor.toObject();
+
+        // Send Verification Email
+
+        return vendor;
     }
 
     static async login({ body }: Partial<Request>) {
@@ -65,40 +107,6 @@ class AuthService {
         const token = await TokenService.generateToken(user);
 
         return { role: user.role, token: token };
-    }
-
-    static async registerVendor({ body }: Partial<Request>) {
-
-        const { error, value } = Joi.object({
-            firstname: Joi.string().min(3).max(30).required(),
-            lastname: Joi.string().min(3).max(30).required(),
-            email: Joi.string().email().required(),
-            password: Joi.string().min(8).required(),
-            businessName: Joi.string().min(5).max(50).required(),
-        })
-            .options({ stripUnknown: true })
-            .validate(body);
-
-        if (error) throw new BadRequestException(error.message);
-
-        const hashedPassword = await hashPassword(value.password);
-
-        const context = {
-            firstname: value.firstname,
-            lastname: value.lastname,
-            email: value.email,
-            password: hashedPassword,
-            role: UserRoles.VENDOR,
-            businessName: value.businessName,
-        };
-
-        const new_vendor = await new Vendor(context).save();
-
-        const { password, ...vendor } = new_vendor.toObject();
-
-        // Send Verification Email
-
-        return vendor;
     }
 }
 

@@ -23,6 +23,13 @@ const BaseUserSchema: Schema<IUser> = new mongoose.Schema<IUser>(
             maxlength: 50,
         },
 
+        phoneNumber: {
+            type: String,
+            required: true,
+            minlength: 10,
+            maxlength: 10,
+        },
+
         email: {
             type: String,
             required: true,

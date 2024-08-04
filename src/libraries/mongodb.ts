@@ -12,13 +12,13 @@ export const connect_to_mongo = async () => {
 };
 
 // set mongoose options to have lean turned on by default | ref: https://itnext.io/performance-tips-for-mongodb-mongoose-190732a5d382
-mongoose.Query.prototype.setOptions = function () {
-    if (this.mongooseOptions().lean == null) {
-        this.mongooseOptions({ lean: true });
-    }
+// mongoose.Query.prototype.setOptions = function () {
+//     if (this.mongooseOptions().lean == null) {
+//         this.mongooseOptions({ lean: true });
+//     }
 
-    return this;
-};
+//     return this;
+// };
 
 export const disconnect_from_mongo = async () => {
     await mongoose.disconnect();

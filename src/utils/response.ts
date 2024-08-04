@@ -1,4 +1,4 @@
-function response<T>(message: string, data: T | null, success?: boolean) {
+function response<T>(message: string, data?: T | null, success?: boolean) {
     return {
         success: success == null ? true : success,
         message: message,
